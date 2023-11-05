@@ -1,5 +1,5 @@
 
-import {ObjectId, Schema} from 'mongoose'
+import {Model, ObjectId, Schema, model} from 'mongoose'
 
 interface UserDocument {
   name:string
@@ -44,4 +44,8 @@ const userSchema = new Schema<UserDocument>({
       ref:"Booking"
     }
   ]
+},{
+  timestamps:true
 });
+
+export default model("User", userSchema) as Model<UserDocument>;
