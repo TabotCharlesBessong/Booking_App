@@ -3,14 +3,16 @@
   "version": "1.0.0",
   "description": "An application for reservation of hotels and travelling",
   "main": "index.js",
-  "scripts":{
-    "start":"nodemon src/index.ts"
+  "scripts": {
+    "start": "nodemon src/index.ts"
   },
   "repository": "https://github.com/TabotCharlesBessong/Booking_App.git",
   "author": "TabotCharlesBessong <ebezebeatrice@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "mongoose": "^8.0.0",
     "nodemon": "^3.0.1"
   },
   "devDependencies": {
