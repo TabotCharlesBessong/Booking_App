@@ -20,6 +20,7 @@ export const validate = (schema:any): RequestHandler => {
     } catch (error) {
       if(error instanceof yup.ValidationError) {
         res.json({error:error.message})
+        res.status(422).json({error:error.message})
       }
     }
   }
