@@ -1,4 +1,5 @@
 import { Model, ObjectId, Schema, model } from "mongoose";
+import { compare, hash } from "bcrypt";
 
 interface TokenDocument {
   owner:ObjectId
@@ -6,7 +7,11 @@ interface TokenDocument {
   createdAt:Date
 }
 
-const tokenSchema = new Schema<TokenDocument>({
+interface Methods {
+  compareToken(token:string):Promise<boolean>
+}
+
+const tokenSchema = new Schema<TokenDocument,{},Methods>({
   owner:{
     type:Schema.Types.ObjectId,
     required:true,
@@ -22,5 +27,18 @@ const tokenSchema = new Schema<TokenDocument>({
     default:Date.now()
   }
 })
+
+tokenSchema.pre('save',async function(next){
+  if(this.isModified('token')){
+    this.token = await hash(this.token,10)
+
+  }
+  next()
+})
+
+tokenSchema.methods.compareToken = async function(token) {
+  const result = await compare(token,this.token)
+  return result
+}
 
 export default model("Token",tokenSchema) as Model<TokenDocument>
