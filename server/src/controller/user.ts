@@ -5,6 +5,7 @@ import nodemailer from "nodemailer"
 import { MAILTRAP_PASS, MAILTRAP_USER } from "../utils/variables";
 
 export const create:RequestHandler = async (req:CreateUser,res) => {
+  // console.log(users.find)
   const {email,name,password} = req.body
   const user = new users({email,name,password})
 
@@ -13,7 +14,7 @@ export const create:RequestHandler = async (req:CreateUser,res) => {
     port:2525,
     auth:{
       user:MAILTRAP_USER,
-      pass:MAILTRAP_PASS
+      pass:MAILTRAP_PASS,
     }
   })
   transport.sendMail({
@@ -23,5 +24,4 @@ export const create:RequestHandler = async (req:CreateUser,res) => {
   })
   res.status(201).json({user})
   user.save()
-  res.json({user})
 }
