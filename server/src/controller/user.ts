@@ -19,6 +19,7 @@ export const create:RequestHandler = async (req:CreateUser,res) => {
       pass:MAILTRAP_PASS,
     }
   })
+  // sendVerificationMa 
   const token = generateToken(6)
   await EmailToken.create({
     owner:user._id,
