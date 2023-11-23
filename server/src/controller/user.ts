@@ -5,6 +5,7 @@ import nodemailer from "nodemailer"
 import { MAILTRAP_PASS, MAILTRAP_USER } from "../utils/variables";
 import EmailToken from "../models/token"
 import { generateToken } from "../utils/helper";
+import { sendVerificationMail } from "../utils/mail";
 
 export const create:RequestHandler = async (req:CreateUser,res) => {
   // console.log(users.find)
@@ -19,16 +20,18 @@ export const create:RequestHandler = async (req:CreateUser,res) => {
       pass:MAILTRAP_PASS,
     }
   })
+  // sendVerificationMa 
   const token = generateToken(6)
-  await EmailToken.create({
-    owner:user._id,
-    token
-  })
-  transport.sendMail({
-    to: user.email,
-    from: "auth@gmail.com",
-    html: `<h1>Your verification token is ${token}</h1>`,
-  });
-  res.status(201).json({user})
+  sendVerificationMail(token,{name,email,userId:user._id.toString()})
+  // await EmailToken.create({
+  //   owner:user._id,
+  //   token
+  // })
+  // transport.sendMail({
+  //   to: user.email,
+  //   from: "auth@gmail.com",
+  //   html: `<h1>Your verification token is ${token}</h1>`,
+  // });
+  res.status(201).json({user:{id:user._id,name,email}})
   user.save()
 }
