@@ -1,3 +1,4 @@
+import { isValidObjectId } from "mongoose";
 import * as yup from "yup"
 
 export const CreateUserSchema = yup.object().shape({
@@ -18,3 +19,14 @@ export const CreateUserSchema = yup.object().shape({
       "Password is too simple!"
     ),
 });
+
+export const EmailValidationSchema = yup.object().shape({
+  token:yup.string().trim().required("A valid token is required"),
+  userId:yup.string().transform(function (value) {
+    if(this.isType(value) && isValidObjectId(value)){
+      return value
+    }else {
+      return ""
+    }
+  }).required("Invalid User id")
+})
