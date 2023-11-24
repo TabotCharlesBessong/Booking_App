@@ -3,8 +3,11 @@ import { CreateUser, VerifyEmailRequest } from "../@types/user";
 import emailVerificationToken from "../models/emailVerificationToken";
 import users from "../models/users";
 import { generateToken } from "../utils/helper";
-import { sendVerificationMail } from "../utils/mail";
+import { sendForgetPasswordLink, sendVerificationMail } from "../utils/mail";
 import {isValidObjectId} from "mongoose"
+import passwordResetToken from "../models/passwordResetToken";
+import crypto from "crypto"
+import { PASSWORD_RESET_LINK } from "../utils/variables";
 
 export const create:RequestHandler = async (req:CreateUser,res) => {
   // console.log(users.find)
@@ -69,4 +72,27 @@ export const sendReVerificationToken:RequestHandler = async (req,res) => {
   })
 
   res.json({message:"Please check your mail"})
+}
+
+export const generateForgetPasswordLink:RequestHandler = async (req,res) => {
+  const {email} = req.body
+
+  const user = await users.findOne({email})
+  if(!user) return res.status(404).json({error:"Account not found!"})
+
+  await passwordResetToken.findOneAndDelete({
+    owner:user._id
+  })
+
+  const token = crypto.randomBytes(36).toString("hex")
+
+  await passwordResetToken.create({
+    owner:user._id,
+    token
+  })
+
+  const resetLink = `${PASSWORD_RESET_LINK}?token=${token}&userId=${user._id}`
+
+  sendForgetPasswordLink({email:user.email,link:resetLink})
+  res.json({message:"Check your registered mail"})
 }
