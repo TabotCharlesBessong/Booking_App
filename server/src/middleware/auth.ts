@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import passwordResetToken from "src/models/passwordResetToken";
+import passwordResetToken from "../models/passwordResetToken";
 
 export const isValidPasswordResetToken: RequestHandler = async (
   req,
