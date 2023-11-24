@@ -3,7 +3,7 @@ import { CreateUser, VerifyEmailRequest } from "../@types/user";
 import emailVerificationToken from "../models/emailVerificationToken";
 import users from "../models/users";
 import { generateToken } from "../utils/helper";
-import { sendForgetPasswordLink, sendVerificationMail } from "../utils/mail";
+import { sendForgetPasswordLink, sendPasswordResetSuccessEmail, sendVerificationMail } from "../utils/mail";
 import {isValidObjectId} from "mongoose"
 import passwordResetToken from "../models/passwordResetToken";
 import crypto from "crypto"
@@ -95,4 +95,29 @@ export const generateForgetPasswordLink:RequestHandler = async (req,res) => {
 
   sendForgetPasswordLink({email:user.email,link:resetLink})
   res.json({message:"Check your registered mail"})
+}
+
+export const grantValid:RequestHandler = async (req,res) => {
+  res.json({valid:true})
+}
+
+export const updatePassword:RequestHandler = async (req,res) => {
+  const {password,userId} = req.body
+
+  const user = await users.findById(userId)
+  if(!user) return res.status(403).json({error:"Unauthorised access"})
+
+  const matched = await user.comparePassword(password)
+  if(matched) return res.status(422).json({error:"The new password must be different!"})
+
+  user.password = password
+  await user.save()
+
+  await passwordResetToken.findOneAndDelete({
+    owner:user._id
+  })
+
+  // send the success email
+  sendPasswordResetSuccessEmail(user.name,user.email)
+  res.json({message:"Password reset successfully"})
 }
