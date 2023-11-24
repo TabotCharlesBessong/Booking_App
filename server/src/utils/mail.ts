@@ -1,8 +1,8 @@
 import nodemailer from "nodemailer"
-import { MAILTRAP_PASS, MAILTRAP_USER, VERIFICATION_MAIL } from "./variables"
-import emailVerificationToken from "../models/emailVerificationToken"
-import { generateTemplate } from "../mail/template"
 import path from "path"
+import { generateTemplate } from "../mail/template"
+import emailVerificationToken from "../models/emailVerificationToken"
+import { MAILTRAP_PASS, MAILTRAP_USER, VERIFICATION_MAIL } from "./variables"
 
 const generateMailTransporter = () => {
   const transport = nodemailer.createTransport({
@@ -26,11 +26,6 @@ export const sendVerificationMail = async(token:string,profile:Profile) => {
   const transport = generateMailTransporter()
 
   const {name,email,userId} = profile
-
-  await emailVerificationToken.create({
-    owner:userId,
-    token
-  })
 
   const welcomeMessage = `Hi ${name}, welcome to Movie Booking Ap! There are so much thing that we do for verified users. Use the given OTP to verify your email.`;
 
