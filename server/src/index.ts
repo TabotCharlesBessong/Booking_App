@@ -12,6 +12,7 @@ const app = express();
 // register a middleware
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
+app.use(express.static("src/public"))
 
 app.use("/auth",authRouter)
 
@@ -21,6 +22,6 @@ mongoose.connect(URI).then(() => {
   console.log(err)
 })
 
-app.listen(3000, () => {
+app.listen(5001, () => {
   console.log("Hello here am i!");
 });
