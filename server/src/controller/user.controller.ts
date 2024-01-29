@@ -37,3 +37,14 @@ export const register = asyncHandler(async (req, res) => {
   const dbUser = await UserModel.create(newUser)
   res.send(generateTokenResponse(dbUser))
 });
+
+export const login = asyncHandler(async(req,res) => {
+  const {email,password} = req.body
+  const user = await UserModel.findOne({email})
+
+  if(user && (await bcrypt.compare(password,user.password))){
+    res.send(generateTokenResponse(user))
+  }else{
+    res.status(HTTP_BAD_REQUEST).send("Wrong username or password")
+  }
+})
