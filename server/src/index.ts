@@ -1,25 +1,27 @@
-import express from "express";
-import dotenv from "dotenv"
-import mongoose from "mongoose"
+import express, { Application } from 'express';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 
-dotenv.config()
+dotenv.config();
 
-const URI = process.env.MONGO_URI as string
+const URI: string = process.env.MONGO_URI as string;
 
-const app = express();
+const app: Application = express();
 
-// register a middleware
-app.use(express.json())
-app.use(express.urlencoded({extended:false}))
-app.use(express.static("src/public"))
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static('src/public'));
 
-
-mongoose.connect(URI).then(() => {
-  console.log('database is connected')
-}).catch((err) => {
-  console.log(err)
-})
+mongoose.connect(URI)
+  .then(() => {
+    console.log('database is connected');
+  })
+  .catch((err: any) => { // Correctly capture the error object
+    console.log(err);
+  });
 
 app.listen(5001, () => {
-  console.log("Hello here am i!");
+  console.log('Hello here am i!');
 });
+
+

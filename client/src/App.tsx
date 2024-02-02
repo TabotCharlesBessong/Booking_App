@@ -1,13 +1,12 @@
-// eslint-disable-next-line no-unused-vars
-import React, { Fragment } from 'react'
-import { Header } from './components'
+import React from 'react';
+import { Header } from './components';
 
-const App = () => {
-  return (
-    <>
-      <Header/>
-    </>
-  )
-}
+const App: React.FC = () => {
+  return React.createElement(
+    React.Fragment,
+    null,
+    React.createElement(Header)
+  );
+};
 
-export default App
+export default App;
