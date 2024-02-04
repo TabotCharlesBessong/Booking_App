@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "es2020",                                  
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "allowJs":true,
+    "checkJs": true,
+    "moduleResolution": "bundler"                        
+  }
+}
