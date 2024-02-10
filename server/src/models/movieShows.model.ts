@@ -7,6 +7,7 @@ export interface MovieShow {
   showStartTime: Date;
   showEndTime: Date;
   location: string;
+  programType: "movie" | "show";
 }
 
 export const MovieShowSchema = new Schema<MovieShow>(
@@ -16,6 +17,7 @@ export const MovieShowSchema = new Schema<MovieShow>(
     showStartTime: { type: Date, required: true },
     showEndTime: { type: Date, required: true },
     location: { type: String, required: true },
+    programType: { type: String, enum: ["movie", "show"], required: true },
   },
   {
     timestamps: true,
@@ -28,4 +30,4 @@ export const MovieShowSchema = new Schema<MovieShow>(
   }
 );
 
-export const MovieShowModel = model("movieShow", MovieShowSchema);
+export const MovieShowModel = model<MovieShow>("movieShow", MovieShowSchema);
