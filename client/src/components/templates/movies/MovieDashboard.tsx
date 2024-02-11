@@ -1,86 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const ProfilePage: React.FC<{ user?: any }> = ({ user }) => {
-  const [editMode, setEditMode] = useState(false);
+const MovieDashboard = () => {
+  const [movies, setMovies] = useState([]); // State for movie data
 
-  const toggleEditMode = () => {
-    if (user) {
-      setEditMode(!editMode);
-    }
-  };
+  useEffect(() => {
+    // Replace with your API call or data source
+    const sampleMovies = [
+      { title: 'Movie 1', poster: 'https://placeimg.com/300/200/movie' },
+      { title: 'Movie 2', poster: 'https://placeimg.com/300/200/movie' },
+      { title: 'Movie 3', poster: 'https://placeimg.com/300/200/movie' },
+      { title: 'Movie 4', poster: 'https://placeimg.com/300/200/movie' },
+      { title: 'Movie 5', poster: 'https://placeimg.com/300/200/movie' },
+      { title: 'Movie 6', poster: 'https://placeimg.com/300/200/movie' },
+    ];
+    setMovies(sampleMovies);
+  }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white dark:bg-gray-900">
-      {user ? (
-        <div className="w-full max-w-md p-8 rounded-lg shadow-md bg-sky-100 dark:bg-gray-800">
-          <h2 className="mb-4 text-2xl font-bold text-sky-500 dark:text-white">My Profile</h2>
+    <div className="min-h-screen bg-white dark:bg-gray-900">
+      <div className="container px-4 pt-16 mx-auto">
+        {/* Dashboard header */}
+        <h1 className="text-3xl font-bold text-sky-500 dark:text-white">Movie Dashboard</h1>
 
-          {/* Profile picture */}
-          <div className="flex items-center justify-center mb-4">
-            <img
-              src={user.picture}
-              alt={user.name}
-              className="object-cover w-32 h-32 border-2 rounded-full border-sky-500 dark:border-gray-400"
-            />
-            {editMode && (
-              <label className="ml-4">
-                <input type="file" hidden />
-                <button className="px-4 py-2 font-bold text-white rounded bg-sky-500 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
-                  Change Picture
-                </button>
-              </label>
-            )}
-          </div>
-
-          {/* User information */}
-          <div className="mb-4">
-            <label className="block mb-2 text-sm font-bold text-gray-700">Name:</label>
-            <span className="text-gray-700">
-              {editMode ? (
-                <input
-                  type="text"
-                  defaultValue={user.name}
-                  className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
-                />
-              ) : (
-                user.name
-              )}
-            </span>
-          </div>
-          <div className="mb-4">
-            <label className="block mb-2 text-sm font-bold text-gray-700">Email:</label>
-            <span className="text-gray-700">{user.email}</span>
-          </div>
-
-          {/* Edit button */}
-          {!editMode && (
-            <button
-              className="px-4 py-2 font-bold text-white rounded bg-sky-500 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
-              onClick={toggleEditMode}
-            >
-              Edit Profile
-            </button>
-          )}
-
-          {/* Save button (when in edit mode) */}
-          {editMode && (
-            <button
-              className="px-4 py-2 font-bold text-white rounded bg-sky-500 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
-              onClick={toggleEditMode}
-            >
-              Save Changes
-            </button>
-          )}
+        {/* Grid layout for movie cards */}
+        <div className="grid grid-cols-1 gap-4 mt-8 sm:grid-cols-2 md:grid-cols-3">
+          {movies.map((movie) => (
+            <div key={movie.title} className="bg-white rounded-lg shadow-md dark:bg-gray-800">
+              <img
+                src={movie.poster}
+                alt={movie.title}
+                className="object-cover w-full h-48 rounded-t-lg"
+              />
+              <div className="px-4 py-5">
+                <h2 className="text-xl font-bold text-sky-500 dark:text-white">{movie.title}</h2>
+                {/* Add star rating or other details here */}
+              </div>
+            </div>
+          ))}
         </div>
-      ) : (
-        <div className="text-center text-gray-700">
-          {/* Display a message or loader while user data is loading or unavailable */}
-          {user === undefined ? 'Loading profile...' : 'Please provide user data!'}
-        </div>
-      )}
+
+        {/* Additional sections, content, or functionalities */}
+      </div>
     </div>
   );
 };
 
-export default ProfilePage;
+export default MovieDashboard;
+
+
 

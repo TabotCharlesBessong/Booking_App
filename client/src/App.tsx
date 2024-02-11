@@ -9,13 +9,15 @@ import ProfilePage from './components/templates/user/ProfilePage'
 
 
 
+
 const App = () => {
   return (
     <>
       <Header/>
       <AuthPage/>
      <MovieDashboard/>
-     <ProfilePage></ProfilePage>
+     {/* <ProfilePage/>
+     */}
 
     </>
   )
