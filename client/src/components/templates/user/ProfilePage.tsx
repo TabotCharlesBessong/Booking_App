@@ -30,7 +30,7 @@ const ProfilePage = ({ user }) => {
         </div>
 
         {/* User information */}
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block mb-2 text-sm font-bold text-gray-700">Name:</label>
           <span className="text-gray-700">
             {editMode ? (
@@ -47,7 +47,7 @@ const ProfilePage = ({ user }) => {
         <div className="mb-4">
           <label className="block mb-2 text-sm font-bold text-gray-700">Email:</label>
           <span className="text-gray-700">{user.email}</span>
-        </div>
+        </div> */}
 
         {/* Edit button */}
         {!editMode && (
