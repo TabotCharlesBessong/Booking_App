@@ -1,8 +1,12 @@
-import { HTTP_BAD_REQUEST, HTTP_NOT_FOUND, HTTP_SERVER_ERROR } from "./../constants/http_status";
+import {
+  HTTP_BAD_REQUEST,
+  HTTP_NOT_FOUND,
+  HTTP_SERVER_ERROR,
+} from "./../constants/http_status";
 import { sample_users } from "./../data";
 import { User, UserModel } from "./../models/user.model";
 import asyncHandler from "express-async-handler";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 import { generateTokenResponse } from "./../utils/generateToken";
 
 export const seeding = asyncHandler(async (req, res) => {
@@ -23,19 +27,19 @@ export const register = asyncHandler(async (req, res) => {
     res.status(HTTP_BAD_REQUEST).send("A user with this email already exist!");
     return;
   }
-  const encryptedPassword = await bcrypt.hash(password,10)
+  const encryptedPassword = await bcrypt.hash(password, 10);
 
-  const newUser:User = {
-    id:'',
+  const newUser: User = {
+    id: "",
     name,
-    email:email.toLowerCase(),
-    password:encryptedPassword,
+    email: email.toLowerCase(),
+    password: encryptedPassword,
     address,
-    bookings:[]
-  }
+    bookings: [],
+  };
 
-  const dbUser = await UserModel.create(newUser)
-  res.send(generateTokenResponse(dbUser))
+  const dbUser = await UserModel.create(newUser);
+  res.send(generateTokenResponse(dbUser));
 });
 
 export const updateUser = asyncHandler(async (req, res) => {
@@ -71,37 +75,50 @@ export const updateUser = asyncHandler(async (req, res) => {
   }
 });
 
-export const login = asyncHandler(async(req,res) => {
-  const {email,password} = req.body
-  const user = await UserModel.findOne({email})
+export const login = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  const user = await UserModel.findOne({ email });
 
-  if(user && (await bcrypt.compare(password,user.password))){
-    res.send(generateTokenResponse(user))
-  }else{
-    res.status(HTTP_BAD_REQUEST).send("Wrong username or password")
+  if (user && (await bcrypt.compare(password, user.password))) {
+    res.send(generateTokenResponse(user));
+  } else {
+    res.status(HTTP_BAD_REQUEST).send("Wrong username or password");
   }
-})
+});
 
-export const getAllUsers = asyncHandler(async(req,res,next) => {
-  let users:User[]
+export const getAllUsers = asyncHandler(async (req, res, next) => {
+  let users: User[];
   try {
-    users = await UserModel.find()
+    users = await UserModel.find();
     // console.log(users)
-    res.send({users})
-  } catch (error) {
-    console.log(error)
-    res.send({ message: "Unexpected error occured fetching users" });
-  }
-})
-
-export const getUser = asyncHandler(async(req,res) => {
-  const id = req.params.id as string
-  let user:User | null
-  try {
-    user = await UserModel.findById(id)
-    res.send({user})
+    res.send({ users });
   } catch (error) {
     console.log(error);
-    res.send({ message: "Unexpected error occured fetching a user information" });
+    res.send({ message: "Unexpected error occured fetching users" });
+  }
+});
+
+export const getUser = asyncHandler(async (req, res) => {
+  const id = req.params.id as string;
+  let user: User | null;
+  try {
+    user = await UserModel.findById(id);
+    res.send({ user });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      message: "Unexpected error occured fetching a user information",
+    });
+  }
+});
+
+export const deleteUser = asyncHandler(async(req,res) => {
+  const id = req.params.id as string;
+  let user:User | null
+  try {
+    user = await UserModel.findByIdAndDelete(id)
+    res.send({message:"User deleted successfully"})
+  } catch (error) {
+    res.send({message:"Error deleting user"})
   }
 })
