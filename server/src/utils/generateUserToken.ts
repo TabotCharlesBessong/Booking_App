@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
-import { User } from "./../models/user.model";
-import dotenv from "dotenv"
+import { User } from "../models/user.model";
+import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 
 const SECRET = process.env.JWT_SECRET as string;
 
@@ -20,11 +20,11 @@ export const generateTokenResponse = (user: User) => {
   );
 
   return {
-    id:user.id,
-    email:user.email,
-    name:user.name,
-    address:user.address,
-    bookings:user.bookings,
-    token:token
-  }
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    address: user.address,
+    bookings: user.bookings,
+    token: token,
+  };
 };

@@ -1,13 +1,18 @@
-import mongoose, { Schema } from "mongoose";
-import { UserModel, User } from "./user.model";
+import mongoose, { Schema, Types, model } from "mongoose";
+import { User } from "./user.model";
 
-export interface Admin extends Pick<User, "id" | "email" | "password"> {
-  addedMovies: [];
+export interface Admin {
+  id: string;
+  email: string;
+  password: string;
+  addedMovies: Types.ObjectId[];
 }
 
 const AdminSchema = new Schema<Admin>(
   {
     addedMovies: [{ type: mongoose.Types.ObjectId, ref: "movieShow" }],
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
   },
   {
     timestamps: true,
@@ -20,4 +25,4 @@ const AdminSchema = new Schema<Admin>(
   }
 );
 
-export const AdminModel = UserModel.discriminator<Admin>("admin", AdminSchema);
+export const AdminModel = model<Admin>("admin", AdminSchema);
