@@ -1,4 +1,4 @@
-import { HTTP_BAD_REQUEST } from "./../constants/http_status";
+import { HTTP_BAD_REQUEST, HTTP_NOT_FOUND, HTTP_SERVER_ERROR } from "./../constants/http_status";
 import { sample_users } from "./../data";
 import { User, UserModel } from "./../models/user.model";
 import asyncHandler from "express-async-handler";
@@ -36,6 +36,39 @@ export const register = asyncHandler(async (req, res) => {
 
   const dbUser = await UserModel.create(newUser)
   res.send(generateTokenResponse(dbUser))
+});
+
+export const updateUser = asyncHandler(async (req, res) => {
+  const { name, email, password, address } = req.body;
+  const id = req.params.id as string;
+
+  try {
+    // Find the user by userId
+    const user = await UserModel.findById(id);
+
+    if (!user) {
+      res.status(HTTP_NOT_FOUND).send("User not found");
+      return;
+    }
+
+    // Update the user's information
+    user.name = name || user.name;
+    user.email = email || user.email;
+    user.address = address || user.address;
+
+    if (password) {
+      const encryptedPassword = await bcrypt.hash(password, 10);
+      user.password = encryptedPassword;
+    }
+
+    // Save the updated user
+    const updatedUser = await user.save();
+
+    res.send(generateTokenResponse(updatedUser));
+  } catch (error) {
+    console.error(error);
+    res.status(HTTP_SERVER_ERROR).send("Something went wrong");
+  }
 });
 
 export const login = asyncHandler(async(req,res) => {
