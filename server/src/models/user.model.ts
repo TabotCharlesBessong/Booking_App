@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, Types, model } from "mongoose";
 
 export interface User {
   id: string;
@@ -6,7 +6,7 @@ export interface User {
   password: string;
   name: string;
   address: string;
-  isAdmin: boolean;
+  bookings:Types.ObjectId[];
 }
 
 export const UserSchema = new Schema<User>(
@@ -15,7 +15,7 @@ export const UserSchema = new Schema<User>(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     address: { type: String, required: true },
-    isAdmin: { type: Boolean, required: true,default:false },
+    bookings:[{type:mongoose.Types.ObjectId,ref:"ticket"}]
   },
   {
     timestamps: true,
