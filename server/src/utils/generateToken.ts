@@ -11,7 +11,7 @@ export const generateTokenResponse = (user: User) => {
     {
       id: user.id,
       email: user.email,
-      isAdmin: user.isAdmin,
+      // isAdmin: user.isAdmin,
     },
     SECRET!,
     {
@@ -24,7 +24,7 @@ export const generateTokenResponse = (user: User) => {
     email:user.email,
     name:user.name,
     address:user.address,
-    isAdmin:user.isAdmin,
+    bookings:user.bookings,
     token:token
   }
 };

@@ -31,7 +31,7 @@ export const register = asyncHandler(async (req, res) => {
     email:email.toLowerCase(),
     password:encryptedPassword,
     address,
-    isAdmin:false
+    bookings:[]
   }
 
   const dbUser = await UserModel.create(newUser)
