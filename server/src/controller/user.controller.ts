@@ -7,7 +7,7 @@ import { sample_users } from "./../data";
 import { User, UserModel } from "./../models/user.model";
 import asyncHandler from "express-async-handler";
 import bcrypt from "bcrypt";
-import { generateTokenResponse } from "./../utils/generateToken";
+import { generateTokenResponse } from "../utils/generateUserToken";
 import { TicketModel } from "./../models/ticket.model";
 
 export const seeding = asyncHandler(async (req, res) => {
@@ -113,25 +113,27 @@ export const getUser = asyncHandler(async (req, res) => {
   }
 });
 
-export const deleteUser = asyncHandler(async(req,res) => {
+export const deleteUser = asyncHandler(async (req, res) => {
   const id = req.params.id as string;
-  let user:User | null
+  let user: User | null;
   try {
-    user = await UserModel.findByIdAndDelete(id)
-    res.send({message:"User deleted successfully"})
+    user = await UserModel.findByIdAndDelete(id);
+    res.send({ message: "User deleted successfully" });
   } catch (error) {
-    res.send({message:"Error deleting user"})
+    res.send({ message: "Error deleting user" });
   }
-})
+});
 
-export const getUserBookings = asyncHandler(async(req,res) => {
-  const id = req.params.id as string
-  let bookings: any
+export const getUserBookings = asyncHandler(async (req, res) => {
+  const id = req.params.id as string;
+  let bookings: any;
   try {
-    bookings = await TicketModel.find({user:id}).populate("movieShow").populate("user")
-    res.send({bookings})
+    bookings = await TicketModel.find({ user: id })
+      .populate("movieShow")
+      .populate("user");
+    res.send({ bookings });
   } catch (error) {
-    console.log(error)
-    res.send({message:"Unable to fetch user bookings"})
+    console.log(error);
+    res.send({ message: "Unable to fetch user bookings" });
   }
-})
+});
