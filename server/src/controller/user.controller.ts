@@ -48,3 +48,27 @@ export const login = asyncHandler(async(req,res) => {
     res.status(HTTP_BAD_REQUEST).send("Wrong username or password")
   }
 })
+
+export const getAllUsers = asyncHandler(async(req,res,next) => {
+  let users:User[]
+  try {
+    users = await UserModel.find()
+    // console.log(users)
+    res.send({users})
+  } catch (error) {
+    console.log(error)
+    res.send({ message: "Unexpected error occured fetching users" });
+  }
+})
+
+export const getUser = asyncHandler(async(req,res) => {
+  const id = req.params.id as string
+  let user:User | null
+  try {
+    user = await UserModel.findById(id)
+    res.send({user})
+  } catch (error) {
+    console.log(error);
+    res.send({ message: "Unexpected error occured fetching a user information" });
+  }
+})
