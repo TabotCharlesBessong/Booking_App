@@ -1,11 +1,16 @@
 import { Router } from "express";
-import { adminLogin, adminRegistration } from "./../controller/admin.controller";
+import {
+  adminLogin,
+  adminRegistration,
+  getAdmin,
+  getAllAdmins,
+} from "./../controller/admin.controller";
 
-const router = Router()
+const router = Router();
 
-router.post('/register',adminRegistration) // admin signup
-router.post('/login',adminLogin) // admin login
-router.get('/') // fetch all admins
-router.get('/:id') // get all admins by id
+router.post("/register", adminRegistration); // admin signup
+router.post("/login", adminLogin); // admin login
+router.get("/", getAllAdmins); // fetch all admins
+router.get("/:id",getAdmin); // get all admins by id
 
-export default router
+export default router;
