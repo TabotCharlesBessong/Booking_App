@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, Types, model } from "mongoose";
 
 export interface User {
   id: string;
@@ -6,23 +6,26 @@ export interface User {
   password: string;
   name: string;
   address: string;
-  isAdmin: boolean;
+  bookings:Types.ObjectId[];
 }
 
-export const UserSchema = new Schema<User>({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  address: { type: String, required: true },
-  isAdmin: { type: Boolean, required: true },
-},{
-  timestamps:true,
-  toJSON:{
-    virtuals:true
+export const UserSchema = new Schema<User>(
+  {
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    address: { type: String, required: true },
+    bookings:[{type:mongoose.Types.ObjectId,ref:"ticket"}]
   },
-  toObject:{
-    virtuals:true
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
+    toObject: {
+      virtuals: true,
+    },
   }
-});
+);
 
-export const UserModel = model<User>('user',UserSchema)
+export const UserModel = model<User>("user", UserSchema);
