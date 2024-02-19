@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv"
 import mongoose from "mongoose"
 import userRouter from "./routers/user.router"
+import adminRouter from "./routers/admin.router"
 import cors from "cors"
 
 dotenv.config()
@@ -21,6 +22,7 @@ app.use(express.urlencoded({extended:false}))
 app.use(express.static("src/public"))
 
 app.use("/api/users",userRouter)
+app.use("/api/admin",adminRouter)
 
 
 mongoose.connect(URI).then(() => {
