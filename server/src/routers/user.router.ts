@@ -3,6 +3,7 @@ import {
   deleteUser,
   getAllUsers,
   getUser,
+  getUserBookings,
   login,
   register,
   seeding,
@@ -16,7 +17,7 @@ router.post("/register", register);
 router.post("/login", login);
 router.get("/", getAllUsers); // get all users
 router.put("/:id",updateUser); // update user
-router.get("/bookings/:id"); // getting user bookings
+router.get("/bookings/:id",getUserBookings); // getting user bookings
 router.delete("/:id",deleteUser); //deleting a user
 router.get("/:id", getUser); // get user by id
 
