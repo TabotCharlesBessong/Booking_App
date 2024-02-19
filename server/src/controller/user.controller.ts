@@ -59,8 +59,16 @@ export const getAllUsers = asyncHandler(async(req,res,next) => {
     console.log(error)
     res.send({ message: "Unexpected error occured fetching users" });
   }
-  // if(!users){
-  //   return res.status(500).json({message:"Unexpected error occured fetching users"})
-  // }
-  // return res.status(200).json({users})
+})
+
+export const getUser = asyncHandler(async(req,res) => {
+  const id = req.params.id as string
+  let user:User | null
+  try {
+    user = await UserModel.findById(id)
+    res.send({user})
+  } catch (error) {
+    console.log(error);
+    res.send({ message: "Unexpected error occured fetching a user information" });
+  }
 })
