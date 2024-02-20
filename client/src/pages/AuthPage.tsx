@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { TextInput } from '../components';
 
 const AuthPage = () => {
   const [isSignup, setIsSignup] = useState(true); // State variable for form mode
@@ -11,6 +12,7 @@ const AuthPage = () => {
         </h2>
         <form onSubmit={(event) => { event.preventDefault(); }}>
           {/* Add logic for email and password inputs here */}
+          <TextInput name='person' type='text' placeholder='who are you' label='Tell them' />
           <div className="mb-4">
             <label htmlFor="email" className="block mb-2 text-sm font-bold text-gray-700">
               Email
