@@ -3,9 +3,10 @@ import React, { Fragment } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { Header } from './components'
-import AuthPage from './components/templates/auth/AuthPage'
+import LoginPage from './components/templates/auth/LoginPage'
 import MovieDashboard from './components/templates/movies/MovieDashboard'
 import ProfilePage from './components/templates/user/ProfilePage'
+import SignupPage from './components/templates/auth/SignupPage';
 
 
 
@@ -17,9 +18,9 @@ function App() {
     <BrowserRouter>
       <Routes>
       <Route path="/home" element={<Header />} />
-        <Route path="/" element={<AuthPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/moviedash" element={<MovieDashboard />} />
-        {/* <Route path="/products" element={<ProfilePage />} /> */}
+        <Route path="/signup" element={<SignupPage />} />
       </Routes>
     </BrowserRouter>
   );
