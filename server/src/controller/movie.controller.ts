@@ -11,7 +11,8 @@ import { MovieShow, MovieShowModel } from "../models/movieShows.model";
 import mongoose from "mongoose";
 
 export const addMovie = asyncHandler(async (req, res) => {
-  const extractedToken:string = req.headers.authorization?.split(" ")[1] as any;
+  const extractedToken:string = req.headers.authorization as any
+  console.log(extractedToken)
   if (!extractedToken || extractedToken?.trim() === "") {
     res.status(HTTP_NOT_FOUND).json({ message: "Token Not Found" });
     return
@@ -71,7 +72,7 @@ export const addMovie = asyncHandler(async (req, res) => {
       title,
       description,
       language,
-      showDate: new Date(`${showDate}`),
+      showDate,
       startTime,
       location,
       programType,
