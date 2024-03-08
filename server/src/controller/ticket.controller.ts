@@ -35,7 +35,7 @@ export const newBooking = asyncHandler(async (req, res) => {
     existingMovieShow?.bookings.push(ticket);
     await ticket.save({ session });
     session.commitTransaction();
-    res.status(201).json({ticket})
+    res.status(201).json({ ticket });
   } catch (error) {
     console.log(error);
     res
@@ -44,16 +44,16 @@ export const newBooking = asyncHandler(async (req, res) => {
   }
 });
 
-export const getBooking = asyncHandler(async(req,res) => {
-  const id = req.params.id
-  let ticket:Ticket | null
+export const getBooking = asyncHandler(async (req, res) => {
+  const id = req.params.id;
+  let ticket: Ticket | null;
   try {
-    ticket = await TicketModel.findById(id)
-    res.status(200).json({ticket})
+    ticket = await TicketModel.findById(id);
+    res.status(200).json({ ticket });
   } catch (error) {
-    res.status(HTTP_SERVER_ERROR).json({message:"Unexpected Error"})
+    res.status(HTTP_SERVER_ERROR).json({ message: "Unexpected Error" });
   }
-})
+});
 
 export const getAllTickets = asyncHandler(async (req, res) => {
   let tickets: any;
@@ -63,5 +63,24 @@ export const getAllTickets = asyncHandler(async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Request failed" });
+  }
+});
+
+export const deleteTicket = asyncHandler(async (req, res) => {
+  const id = req.params.id;
+  let ticket: any;
+  try {
+    ticket = await TicketModel.findByIdAndDelete(id).populate("user movie");
+    console.log(ticket);
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    await ticket.user.bookings.pull(ticket);
+    await ticket.movie.bookings.pull(ticket);
+    await ticket.movie.save({ session });
+    await ticket.user.save({ session });
+    res.status(200).json({ message: "Deleted Successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(HTTP_SERVER_ERROR).json({ message: "Unable to delete error" });
   }
 });
