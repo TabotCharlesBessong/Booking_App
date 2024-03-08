@@ -2,15 +2,15 @@ import mongoose, { Schema, Types, model } from "mongoose";
 
 export interface MovieShow {
   id: string;
-  title:string
-  description:string
+  title: string;
+  description: string;
   language: string;
   showDate: Date;
-  startTime:Date
+  startTime: Date;
   location: string;
   programType: "movie" | "show";
-  bookings:Types.ObjectId[]
-  admin:Types.ObjectId
+  bookings: Types.ObjectId[];
+  admin: Types.ObjectId;
 }
 
 export const MovieShowSchema = new Schema<MovieShow>(
@@ -27,7 +27,7 @@ export const MovieShowSchema = new Schema<MovieShow>(
     title: { type: String, required: true },
     description: { type: String, required: true },
     bookings: [{ type: mongoose.Types.ObjectId, ref: "ticket" }],
-    admin: { type: "ObjectId", ref: "admin", required: true },
+    admin: { type: Schema.Types.ObjectId, ref: "admin", required: true },
   },
   {
     timestamps: true,

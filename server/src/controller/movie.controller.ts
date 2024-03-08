@@ -1,4 +1,4 @@
-import { Admin, AdminModel } from './../models/admin.model';
+import { Admin, AdminModel } from "./../models/admin.model";
 import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
 import {
@@ -11,11 +11,11 @@ import { MovieShow, MovieShowModel } from "../models/movieShows.model";
 import mongoose from "mongoose";
 
 export const addMovie = asyncHandler(async (req, res) => {
-  const extractedToken:string = req.headers.authorization as any
-  console.log(extractedToken)
+  const extractedToken: string = req.headers.authorization as any;
+  console.log(extractedToken);
   if (!extractedToken || extractedToken?.trim() === "") {
     res.status(HTTP_NOT_FOUND).json({ message: "Token Not Found" });
-    return
+    return;
   }
   let adminId: any;
 
@@ -45,7 +45,7 @@ export const addMovie = asyncHandler(async (req, res) => {
     res
       .status(HTTP_BAD_REQUEST)
       .send("Invalid program type\nMust be either 'movie' or 'show'");
-      return
+    return;
   }
 
   if (
@@ -61,14 +61,14 @@ export const addMovie = asyncHandler(async (req, res) => {
     location.trim() === ""
   ) {
     res.status(HTTP_UNPROCESSABLE).json({ message: "Invalid Inputs" });
-    return
+    return;
   }
 
-  let movie:any
+  let movie: any;
+  const session = await mongoose.startSession();
 
   try {
     movie = new MovieShowModel({
-      id: "",
       title,
       description,
       language,
@@ -79,16 +79,18 @@ export const addMovie = asyncHandler(async (req, res) => {
       bookings: [],
       admin: adminId,
     });
-    const session = await mongoose.startSession()
-    const adminUser:any | null = await AdminModel.findById(adminId)
-    session.startTransaction()
-    await movie.save({session})
-    adminUser?.addedMovies.push(movie)
-    await adminUser?.save({session})
-    res.send({movie})
+
+    const adminUser: any | null = await AdminModel.findById(adminId);
+
+    session.startTransaction();
+    await movie.save({ session });
+    adminUser?.addedMovies.push(movie);
+    await adminUser?.save({ session });
+    await session.commitTransaction();
+    res.send({ movie });
   } catch (error) {
-    console.log(error)
-    res.status(HTTP_SERVER_ERROR).json({message:"Request failed"})
+    console.log(error);
+    res.status(HTTP_SERVER_ERROR).json({ message: "Request failed" });
   }
 
   // const newMovieOrShow: MovieShow = {
