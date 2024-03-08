@@ -1,8 +1,14 @@
 import { Router } from "express";
-import { newBooking } from "../controller/ticket.controller";
+import {
+  getAllTickets,
+  getBooking,
+  newBooking,
+} from "../controller/ticket.controller";
 
-const router = Router()
+const router = Router();
 
-router.post("/",newBooking)
+router.post("/", newBooking);
+router.get("/", getAllTickets);
+router.get("/:id", getBooking);
 
-export default router
+export default router;

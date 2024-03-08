@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
 import mongoose from "mongoose";
 import { MovieShowModel } from "../models/movieShows.model";
-import { TicketModel } from "../models/ticket.model";
+import { Ticket, TicketModel } from "../models/ticket.model";
 import { User, UserModel } from "../models/user.model";
 import { HTTP_NOT_FOUND, HTTP_SERVER_ERROR } from "../constants/http_status";
 
@@ -41,5 +41,27 @@ export const newBooking = asyncHandler(async (req, res) => {
     res
       .status(HTTP_SERVER_ERROR)
       .json({ message: "Unable to book a movie or a show" });
+  }
+});
+
+export const getBooking = asyncHandler(async(req,res) => {
+  const id = req.params.id
+  let ticket:Ticket | null
+  try {
+    ticket = await TicketModel.findById(id)
+    res.status(200).json({ticket})
+  } catch (error) {
+    res.status(HTTP_SERVER_ERROR).json({message:"Unexpected Error"})
+  }
+})
+
+export const getAllTickets = asyncHandler(async (req, res) => {
+  let tickets: any;
+  try {
+    tickets = await TicketModel.find();
+    res.status(200).json({ tickets });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Request failed" });
   }
 });
