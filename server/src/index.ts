@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import mongoose from "mongoose"
 import userRouter from "./routers/user.router"
 import adminRouter from "./routers/admin.router"
+import movieRouter from "./routers/movie.router"
 import cors from "cors"
 
 dotenv.config()
@@ -23,6 +24,7 @@ app.use(express.static("src/public"))
 
 app.use("/api/users",userRouter)
 app.use("/api/admin",adminRouter)
+app.use("/api/movie",movieRouter)
 
 
 mongoose.connect(URI).then(() => {
@@ -31,6 +33,6 @@ mongoose.connect(URI).then(() => {
   console.log(err)
 })
 
-app.listen(5001, () => {
+app.listen(port, () => {
   console.log(`The server is running on port number ${port}....`);
 });
