@@ -11,8 +11,8 @@ export const TicketSchema = new Schema<Ticket>(
   {
     price: { type: Number, required: true },
     seatNumber: { type: Number, required: true },
-    movie:{type:"ObjectId",ref:"movieShow",required:true},
-    user:{type:"ObjectId",required:true,ref:"user"}
+    movie:{type:Schema.Types.ObjectId,ref:"movieShow",required:true},
+    user:{type:Schema.Types.ObjectId,required:true,ref:"user"}
   },
   {
     timestamps: true,

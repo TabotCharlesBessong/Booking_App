@@ -4,6 +4,7 @@ import mongoose from "mongoose"
 import userRouter from "./routers/user.router"
 import adminRouter from "./routers/admin.router"
 import movieRouter from "./routers/movie.router"
+import ticketRouter from "./routers/ticket.router"
 import cors from "cors"
 
 dotenv.config()
@@ -25,6 +26,7 @@ app.use(express.static("src/public"))
 app.use("/api/users",userRouter)
 app.use("/api/admin",adminRouter)
 app.use("/api/movie",movieRouter)
+app.use("/api/ticket",ticketRouter)
 
 
 mongoose.connect(URI).then(() => {
