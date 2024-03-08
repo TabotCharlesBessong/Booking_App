@@ -111,3 +111,27 @@ export const addMovie = asyncHandler(async (req, res) => {
   // session.startTransaction()
   // await newMovieOrShow
 });
+
+export const getAllMovies = asyncHandler(async (req, res) => {
+  // const {} = req.body
+  let movies: any;
+  try {
+    movies = await MovieShowModel.find();
+    res.status(200).json({ movies });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Request failed" });
+  }
+});
+
+export const getMovieById = asyncHandler(async(req,res) => {
+  const id = req.params.id
+  let movie
+  try{
+    movie = await MovieShowModel.findById(id)
+    res.status(200).json({movie})
+  }catch(error){
+    console.log(error)
+  }
+  if(!movie) res.status(404).json({message:"Movie does not exist"})
+})
