@@ -41,6 +41,11 @@ export const addMovie = asyncHandler(async (req, res) => {
     location,
     programType,
   } = req.body;
+  const existingMovie = await MovieShowModel.findOne({title})
+  if(existingMovie){
+    res.status(HTTP_BAD_REQUEST).send("A movie with that title already exist!")
+    return
+  }
   if (programType !== "movie" && programType !== "show") {
     res
       .status(HTTP_BAD_REQUEST)
