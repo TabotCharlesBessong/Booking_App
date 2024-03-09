@@ -1,21 +1,18 @@
 import mongoose, { Schema, Types, model } from "mongoose";
+import { User } from "./user.model";
 
-export interface User {
+export interface Admin {
   id: string;
   email: string;
   password: string;
-  name: string;
-  address: string;
-  bookings:Types.ObjectId[];
+  addedMovies: Types.ObjectId[];
 }
 
-export const UserSchema = new Schema<User>(
+const AdminSchema = new Schema<Admin>(
   {
-    name: { type: String, required: true },
+    addedMovies: [{ type: mongoose.Types.ObjectId, ref: "movieShow" }],
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    address: { type: String, required: true },
-    bookings:[{type:mongoose.Types.ObjectId,ref:"ticket"}]
   },
   {
     timestamps: true,
@@ -28,4 +25,4 @@ export const UserSchema = new Schema<User>(
   }
 );
 
-export const UserModel = model<User>("user", UserSchema);
+export const AdminModel = model<Admin>("admin", AdminSchema);
