@@ -12,33 +12,10 @@ const AuthPage = () => {
         </h2>
         <form onSubmit={(event) => { event.preventDefault(); }}>
           {/* Add logic for email and password inputs here */}
-          <TextInput name='person' type='text' placeholder='who are you' label='Tell them' />
-          <div className="mb-4">
-            <label htmlFor="email" className="block mb-2 text-sm font-bold text-gray-700">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Enter your email"
-              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="password" className="block mb-2 text-sm font-bold text-gray-700">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Enter your password"
-              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
-              required
-            />
-          </div>
+          <TextInput name='person' type='text' placeholder='enter your name' label='Username' />
+          <TextInput name='email'  type='email'  placeholder='enter your email' label='Email' />
+          <TextInput name='password'  type='password'  placeholder='enter your password' label='Password' />
+          
           <div className="flex items-center justify-between">
             <button
               type="submit"
