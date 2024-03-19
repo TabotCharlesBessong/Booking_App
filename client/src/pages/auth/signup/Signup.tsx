@@ -21,7 +21,7 @@ const Signup = () => {
               type="submit"
               className="px-4 py-2 font-bold text-white rounded bg-sky-500 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
             >
-              {isSignup ? 'Sign Up' : 'Login'}
+              Signup
             </button>
            
               <p className="text-sm text-gray-700">
