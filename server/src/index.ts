@@ -12,7 +12,7 @@ dotenv.config()
 const URI = process.env.MONGO_URI as string
 
 const app = express();
-const port = process.env.PORT as string || 5000
+const port = process.env.PORT as string || 5001
 
 // register a middleware
 app.use(cors({
