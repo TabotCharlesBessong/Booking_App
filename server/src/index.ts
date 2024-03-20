@@ -8,6 +8,7 @@ import ticketRouter from "./routers/ticket.router";
 import cors from "cors";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUI from "swagger-ui-express";
+import swaggerDocs from "./utils/swagger";
 
 dotenv.config();
 
@@ -62,4 +63,5 @@ mongoose
 
 app.listen(port, () => {
   console.log(`The server is running on port number ${port}....`);
+  swaggerDocs(app,port)
 });
