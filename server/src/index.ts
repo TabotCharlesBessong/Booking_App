@@ -36,6 +36,7 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 const port = (process.env.PORT as string) || 5000;
 
+
 // register a middleware
 app.use(
   cors({
