@@ -1,16 +1,50 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import TextInput from "../../components/auth/TextInput";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthFormData, User } from "../../types";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@reduxjs/toolkit/query";
+import { signInSuccess, signUpFailure, signUpStart } from "../../redux/user/userSlice";
 
 const Signup = () => {
+  const [formData, setFormData] = useState<AuthFormData>({})
+  const navigate = useNavigate()
+  const {loading,error,currentUser} = useSelector((state:any) => state.user)
+  const dispatch = useDispatch()
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
+  };
+
+  const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if(!formData.password || !formData.email || !formData.name) return dispatch(signUpFailure("Please fill all input fields"))
+    try {
+      dispatch(signUpStart())
+      const res = await fetch("/api/users/register",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify(formData)
+      });
+      const data = await res.json()
+      console.log(data)
+      if(data.success === false) return dispatch(signUpFailure(data.message))
+      if(res.ok){
+        dispatch(signInSuccess(data))
+        navigate("/login")
+      }
+    } catch (error) {
+      console.log(error)
+      dispatch(signUpFailure(error.message))
+    }
+  }
   return (
     <div className="flex items-center justify-center w-full h-screen bg-white">
       <div className="w-1/2 p-8 rounded-lg shadow-md bg-sky-100">
         <h2 className="mb-4 text-2xl font-bold text-sky-700">Signup</h2>
         <form
-          onSubmit={(event) => {
-            event.preventDefault();
-          }}
+          onSubmit={handleSubmit}
         >
           {/* Add logic for email and password inputs here */}
           <TextInput
@@ -18,18 +52,21 @@ const Signup = () => {
             type="text"
             placeholder="enter your name"
             label="Username"
+            onChange={handleChange}
           />
           <TextInput
-            name="email"
-            type="email"
+            name="email1"
+            type="text"
             placeholder="enter your email"
             label="Email"
+            onChange={handleChange}
           />
           <TextInput
-            name="password"
-            type="password"
+            name="password1"
+            type="text"
             placeholder="enter your password"
             label="Password"
+            onChange={handleChange}
           />
 
           <div className="flex items-center justify-between">
