@@ -1,25 +1,19 @@
-// eslint-disable-next-line no-unused-vars
-import React, { Fragment } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Header } from "./components";
-import MovieDashboard from "./components/templates/movies/MovieDashboard";
-import ProfilePage from "./components/templates/user/ProfilePage";
-import Login from "./pages/auth/login/Login";
-import Signup from "./pages/auth/signup/Signup";
+import { Login, Signup } from "./pages";
 
-function App() {
+const App = () => {
   return (
-    <BrowserRouter>
+    <Router>
+      <Header />
       <Routes>
-        <Route path="/home" element={<Header />} />import AuthPage from "./pages/AuthPage";
+        <Route path="/" element={"Hello Home"} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/moviedash" element={<MovieDashboard />} />
-        {/* <Route path="/products" element={<ProfilePage />} /> */}
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
-}
+};
 
 export default App;
