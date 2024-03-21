@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import TextInput from '../../../components/reusables/TextInput';
+import { Link } from 'react-router-dom';
 
 const Signup = () => {
-  const [isSignup, setIsSignup] = useState(true); // State variable for form mode
 
   return (
     <div className="flex items-center justify-center w-full h-screen bg-white">
@@ -26,13 +26,13 @@ const Signup = () => {
            
               <p className="text-sm text-gray-700">
                 Already have an account? &nbsp;
-                <a
-                  href="#" // Replace with appropriate link or handle transition in JS
+                <Link
+                  to="/login" // Replace with appropriate link or handle transition in JS
                   className="text-sky-500 hover:underline"
-                  onClick={() => setIsSignup(!isSignup)}
+                  onClick={() => {}}
                 >
                   Login
-                </a>
+                </Link>
               </p>
         
            

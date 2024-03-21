@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import TextInput from '../../../components/reusables/TextInput';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
-  const [isSignup, setIsSignup] = useState(true); // State variable for form mode
 
   return (
     <div className="flex items-center justify-center w-full h-screen bg-white">
@@ -12,7 +12,7 @@ const Login = () => {
         </h2>
         <form onSubmit={(event) => { event.preventDefault(); }}>
           {/* Add logic for email and password inputs here */}
-          <TextInput name='person' type='text' placeholder='enter your name' label='Username' />
+          {/* <TextInput name='person' type='text' placeholder='enter your name' label='Username' /> */}
           <TextInput name='email'  type='email'  placeholder='enter your email' label='Email' />
           <TextInput name='password'  type='password'  placeholder='enter your password' label='Password' />
           
@@ -27,13 +27,13 @@ const Login = () => {
             
               <p className="text-sm text-gray-700">
                 Don't have an account? &nbsp;
-                <a
-                  href="#" // Replace with appropriate link or handle transition in JS
+                <Link
+                  to="/signup" // Replace with appropriate link or handle transition in JS
                   className="text-sky-500 hover:underline"
-                  onClick={() => setIsSignup(!isSignup)}
+                  onClick={() => {}}
                 >
                   Sign Up
-                </a>
+                </Link>
               </p>
             
           </div>
