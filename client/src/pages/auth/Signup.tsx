@@ -17,7 +17,9 @@ const Signup = () => {
 
   const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    console.log("Hello")
     if(!formData.password || !formData.email || !formData.name) return dispatch(signUpFailure("Please fill all input fields"))
+    console.log(formData)
     try {
       dispatch(signUpStart())
       const res = await fetch("/api/users/register",{
@@ -28,6 +30,7 @@ const Signup = () => {
         body:JSON.stringify(formData)
       });
       const data = await res.json()
+      console.log(res)
       console.log(data)
       if(data.success === false) return dispatch(signUpFailure(data.message))
       if(res.ok){
@@ -53,20 +56,23 @@ const Signup = () => {
             placeholder="enter your name"
             label="Username"
             onChange={handleChange}
+            id="name"
           />
           <TextInput
-            name="email1"
-            type="text"
+            name="email"
+            type="email"
             placeholder="enter your email"
             label="Email"
             onChange={handleChange}
+            id="email"
           />
           <TextInput
-            name="password1"
-            type="text"
+            name="password"
+            type="password"
             placeholder="enter your password"
             label="Password"
             onChange={handleChange}
+            id="password"
           />
 
           <div className="flex items-center justify-between">
