@@ -10,6 +10,7 @@
     "forceConsistentCasingInFileNames": true,
     "rootDir": "./src",
     "outDir": "./dix",
-    "baseUrl": "."
+    "baseUrl": ".",
+    "resolveJsonModule": true
   }
 }
