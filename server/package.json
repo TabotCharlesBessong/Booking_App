@@ -4,7 +4,8 @@
   "description": "An application for reservation of hotels and travelling",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.ts"
+    "start": "nodemon src/index.ts",
+    "build":"tsc"
   },
   "repository": "https://github.com/TabotCharlesBessong/Booking_App.git",
   "author": "TabotCharlesBessong <ebezebeatrice@gmail.com>",
