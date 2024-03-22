@@ -22,7 +22,7 @@ export const seeding = asyncHandler(async (req, res) => {
 });
 
 export const register = asyncHandler(async (req, res) => {
-  const { name, email, password, address } = req.body;
+  const { name, email, password } = req.body;
   const user = await UserModel.findOne({ email });
   if (user) {
     res.status(HTTP_BAD_REQUEST).send("A user with this email already exist!");
@@ -35,7 +35,7 @@ export const register = asyncHandler(async (req, res) => {
     name,
     email: email.toLowerCase(),
     password: encryptedPassword,
-    address,
+    address: "",
     bookings: [],
   };
 
