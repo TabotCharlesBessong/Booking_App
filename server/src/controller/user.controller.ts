@@ -9,6 +9,8 @@ import asyncHandler from "express-async-handler";
 import bcrypt from "bcrypt";
 import { generateTokenResponse } from "../utils/generateUserToken";
 import { TicketModel } from "./../models/ticket.model";
+import { sendVerificationEmail } from "../utils/mail/verificationEmail";
+import { Profile } from "src/types";
 
 export const seeding = asyncHandler(async (req, res) => {
   const usersCount = await UserModel.countDocuments();
@@ -40,6 +42,13 @@ export const register = asyncHandler(async (req, res) => {
   };
 
   const dbUser = await UserModel.create(newUser);
+  const profile: Profile = {
+    name: dbUser.name,
+    email: dbUser.email,
+    userId: dbUser.id,
+  };
+  const token: string = generateTokenResponse(dbUser).token;
+  await sendVerificationEmail(token, profile);
   res.send(generateTokenResponse(dbUser));
 });
 

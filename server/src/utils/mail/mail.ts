@@ -5,13 +5,14 @@ const PASS = process.env.MAILTRAP_PASS as string
 
 export const generateMailTransporter = () => {
   const transport = nodemailer.createTransport({
-    host:"sandbox.smtp.mailtrap.io",
-    port:2525,
-    auth:{
-      user:USER,
-      pass:PASS
-    }
-  })
+    // host: "sandbox.smtp.mailtrap.io",
+    // port: 2525,
+    service:"gmail",
+    auth: {
+      user: "ebezebeatrice@gmail.com",
+      pass: "hsxpyeudylwxfubh",
+    },
+  });
 
   return transport
 }
