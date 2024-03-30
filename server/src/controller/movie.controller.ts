@@ -9,6 +9,7 @@ import {
 } from "../constants/http_status";
 import { MovieShow, MovieShowModel } from "../models/movieShows.model";
 import mongoose from "mongoose";
+import { string } from "yup";
 
 export const addMovie = asyncHandler(async (req, res) => {
   const extractedToken: string = req.headers.authorization as any;
@@ -41,10 +42,10 @@ export const addMovie = asyncHandler(async (req, res) => {
     location,
     programType,
   } = req.body;
-  const existingMovie = await MovieShowModel.findOne({title})
-  if(existingMovie){
-    res.status(HTTP_BAD_REQUEST).send("A movie with that title already exist!")
-    return
+  const existingMovie = await MovieShowModel.findOne({ title });
+  if (existingMovie) {
+    res.status(HTTP_BAD_REQUEST).send("A movie with that title already exist!");
+    return;
   }
   if (programType !== "movie" && programType !== "show") {
     res
@@ -119,24 +120,75 @@ export const addMovie = asyncHandler(async (req, res) => {
 
 export const getAllMovies = asyncHandler(async (req, res) => {
   // const {} = req.body
+  const { search, language, admin, programType, sortBy, sortOrder, page } =
+    req.query;
   let movies: any;
+  let query: any = {};
+  const startIndex = parseInt(page as string, 10) || 0;
+  const pageSize = parseInt(req.query.limit as string, 10) || 3;
+  const sortDirection = sortOrder === "asc" ? 1 : -1;
+
+  // apply search filters
+  if (search) {
+    const regex = new RegExp(String(search),"i")
+    query.$or = [
+      { description: { $regex: search } },
+      { title: { $regex: search } },
+      { location: { $regex: search } },
+    ];
+  }
+
+  // applying the filters
+  if (language) query.language = language;
+  if (admin) query.admin = admin;
+  if (programType) query.programType = programType;
+
+  let sortOptions: any = {};
+  // apply sorting options
+  if (sortBy) {
+    switch (sortBy) {
+      case "title":
+        sortOptions.title = sortDirection;
+        break;
+      case "showDate":
+        sortOptions.showDate = sortDirection;
+        break;
+      case "bookings":
+        sortOptions.bookings = sortDirection;
+        break;
+      default:
+        break;
+    }
+  }
+
   try {
-    movies = await MovieShowModel.find();
-    res.status(200).json({ movies });
+    const count = await MovieShowModel.countDocuments(query);
+    movies = await MovieShowModel.find(query)
+      .sort(sortOptions)
+      .skip(startIndex)
+      .limit(pageSize);
+    res
+      .status(200)
+      .json({
+        movies,
+        totalCount: count,
+        totalPages: Math.ceil(count / pageSize),
+        currentPage: Math.floor(startIndex / pageSize) + 1,
+      });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Request failed" });
   }
 });
 
-export const getMovieById = asyncHandler(async(req,res) => {
-  const id = req.params.id
-  let movie
-  try{
-    movie = await MovieShowModel.findById(id)
-    res.status(200).json({movie})
-  }catch(error){
-    console.log(error)
+export const getMovieById = asyncHandler(async (req, res) => {
+  const id = req.params.id;
+  let movie;
+  try {
+    movie = await MovieShowModel.findById(id);
+    res.status(200).json({ movie });
+  } catch (error) {
+    console.log(error);
   }
-  if(!movie) res.status(404).json({message:"Movie does not exist"})
-})
+  if (!movie) res.status(404).json({ message: "Movie does not exist" });
+});
