@@ -1,12 +1,9 @@
-import React from 'react';
-import { Header } from './components';
+import React from 'react'
 
-const App: React.FC = () => {
-  return React.createElement(
-    React.Fragment,
-    null,
-    React.createElement(Header)
-  );
-};
+const App = () => {
+  return (
+    <div>App</div>
+  )
+}
 
-export default App;
+export default App
